@@ -1,24 +1,26 @@
 import styles from "../../conference.module.css";
-import { speakerJson } from "../page";
 
+async function fetchSpeakers(){
+  const response = await fetch(
+    "https://raw.githubusercontent.com/adhithiravi/Consuming-GraphqL-Apollo/master/api/data/speakers.json",
+    {next:{revalidate: 300}}
+  );
+
+  const data = await response.json();
+  return data;
+}
 // Static Data fetching
-function fetchSpeakerInfo(slug){
-  console.log('value', speakerJson);
-
-  console.log('keys', speakerJson.keys);
-  console.log('slug', decodeURI(slug));
-  const speakerInfo = speakerJson.speakers?.find(
+async function fetchSpeakerInfo(slug){
+  const speakerJson = await fetchSpeakers();
+  const speakerInfo = speakerJson?.speakers?.find(
     (speaker) => speaker.name == decodeURI(slug));
-  //console.log('names', speakerJson.speakers?.map((s) => s?.name));
-  console.log('speakerInfo', speakerInfo);
   return speakerInfo;
 }
 
-export default function Page({params}) {
-    const speakerInfo = fetchSpeakerInfo(params.slug);
-    if(!speakerInfo) return (<><div>data not found, go back to speakers list and try again.</div></>);
+export default async function Page({params}) {
+    const speakerInfo = await fetchSpeakerInfo(params.slug);
+    if(!speakerInfo) return (<h1 className={styles.titleText}>Data not found, go back to speakers list and try again.</h1>);
     const {id, name, bio, sessions} = speakerInfo;
-    //console.log(name, bio, sessions);
     return (
         <div className={styles.infoContainer}>
             <h3 className={styles.titleText}>{name}</h3>

@@ -2,8 +2,7 @@ import styles from "../conference.module.css";
 
 async function fetchSessions(){
   const response = await fetch(
-    "https://raw.githubusercontent.com/adhithiravi/Consuming-GraphqL-Apollo/master/api/data/sessions.json",
-    {cache: "no-store"}
+    "https://raw.githubusercontent.com/adhithiravi/Consuming-GraphqL-Apollo/master/api/data/sessions.json"
   );
 
   const data = await response.json();

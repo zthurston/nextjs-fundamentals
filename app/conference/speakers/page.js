@@ -1,17 +1,14 @@
 import Link from "next/link";
 import styles from "../conference.module.css";
 
-export let speakerJson = {};
-
 // Static Data fetching
 async function fetchSpeakers(){
   const response = await fetch(
     "https://raw.githubusercontent.com/adhithiravi/Consuming-GraphqL-Apollo/master/api/data/speakers.json",
-    {next:{revalidate: 20}}
+    {next:{revalidate: 300}}
   );
 
   const data = await response.json();
-  speakerJson = data;
   return data;
 }
 
